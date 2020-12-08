@@ -26,20 +26,28 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+//        action untuk fab add
         buttonAddNote.setOnClickListener {
             startActivityForResult(
                 Intent(this, AddEditNoteActivity::class.java),
                 ADD_NOTE_REQUEST
             )
         }
+
+//        deklarasi RecyclerView dan adapter
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.setHasFixedSize(true)
         val adapter = NoteAdapter()
         recycler_view.adapter = adapter
+
+//        Deklarasi viewModel
         noteViewModel = ViewModelProviders.of(this).get(NoteViewModel::class.java)
         noteViewModel.getAllNotes().observe(this, Observer<List<Note>> {
             adapter.submitList(it)
         })
+
+//        Helper saat RecyclerView disentuh
         ItemTouchHelper(object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT.or(ItemTouchHelper.RIGHT)) {
             override fun onMove(
@@ -50,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//                Delete data
                 noteViewModel.delete(adapter.getNoteAt(viewHolder.adapterPosition))
                 Toast.makeText(baseContext, "Catatan dihapus!", Toast.LENGTH_SHORT).show()
             }
@@ -57,11 +66,16 @@ class MainActivity : AppCompatActivity() {
         ).attachToRecyclerView(recycler_view)
         adapter.setOnItemClickListener(object : NoteAdapter.OnItemClickListener {
             override fun onItemClick(note: Note) {
+
+//                Intent data yang diedit agar tampil pada halaman edit
                 val intent = Intent(baseContext, AddEditNoteActivity::class.java)
                 intent.putExtra(AddEditNoteActivity.EXTRA_ID, note.id)
                 intent.putExtra(AddEditNoteActivity.EXTRA_JUDUL, note.title)
                 intent.putExtra(AddEditNoteActivity.EXTRA_DESKRIPSI, note.description)
                 intent.putExtra(AddEditNoteActivity.EXTRA_PRIORITAS, note.priority)
+
+                Toast.makeText(baseContext, "Catatan " + note.title + " dipilih!", Toast.LENGTH_SHORT).show()
+
                 startActivityForResult(intent, EDIT_NOTE_REQUEST)
             }
         })
@@ -87,6 +101,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+//        logic add data database
         if (requestCode == ADD_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
             val newNote = Note(
                 data!!.getStringExtra(AddEditNoteActivity.EXTRA_JUDUL),
@@ -95,7 +110,9 @@ class MainActivity : AppCompatActivity() {
             )
             noteViewModel.insert(newNote)
             Toast.makeText(this, "Catatan disimpan!", Toast.LENGTH_SHORT).show()
-        } else if (requestCode == EDIT_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
+        }
+//        logic update data database
+        else if (requestCode == EDIT_NOTE_REQUEST && resultCode == Activity.RESULT_OK) {
             val id = data?.getIntExtra(AddEditNoteActivity.EXTRA_ID, -1)
             if (id == -1) {
                 Toast.makeText(this, "Pembaharuan gagal!", Toast.LENGTH_SHORT).show()

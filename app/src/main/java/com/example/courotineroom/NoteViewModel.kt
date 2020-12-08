@@ -8,6 +8,7 @@ import com.example.courotineroom.catatan.NoteRepository
 
 class NoteViewModel(application: Application) : AndroidViewModel(application)
 {
+//    Menambahkan repository kedalam viewModel
     private var repository: NoteRepository =
         NoteRepository(application)
     private var allNotes: LiveData<List<Note>> = repository.getAllNotes()

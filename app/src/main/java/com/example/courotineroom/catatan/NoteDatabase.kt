@@ -9,6 +9,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(entities = [Note::class], version = 1)
 abstract class NoteDatabase : RoomDatabase() {
+
+//    Menambahkan database kedalam instance
     abstract fun noteDao(): NoteDao
     companion object {
         private var instance: NoteDatabase? = null
@@ -29,6 +31,7 @@ abstract class NoteDatabase : RoomDatabase() {
         fun destroyInstance() {
             instance = null
         }
+//        Callback database
         private val roomCallback = object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
@@ -37,6 +40,7 @@ abstract class NoteDatabase : RoomDatabase() {
             }
         }
     }
+//    Penerapan courutine pada database
     class PopulateDbAsyncTask(db: NoteDatabase?) : AsyncTask<Unit, Unit, Unit>() {
         private val noteDao = db?.noteDao()
         override fun doInBackground(vararg p0: Unit?) {

@@ -19,11 +19,17 @@ class AddEditNoteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
+
+//        Set angka min dan max prioritas
         number_picker_priority.minValue = 1
         number_picker_priority.maxValue = 5
+
+//        Mengatur judul layout saat tambah dan edit
         supportActionBar?.setHomeAsUpIndicator(R.drawable.close)
         if (intent.hasExtra(EXTRA_ID)) {
             title = "Edit Catatan"
+
+//          get inputan saat edit dipilih
             edit_text_title.setText(intent.getStringExtra(EXTRA_JUDUL))
             edit_text_description.setText(intent.getStringExtra(EXTRA_DESKRIPSI))
             number_picker_priority.value = intent.getIntExtra(EXTRA_PRIORITAS, 1)
@@ -31,7 +37,9 @@ class AddEditNoteActivity : AppCompatActivity() {
             title = "Tambah Catatan"
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        set menu
         menuInflater.inflate(R.menu.add_note_menu, menu)
         return true
     }
@@ -45,10 +53,13 @@ class AddEditNoteActivity : AppCompatActivity() {
         }
     }
     private fun saveNote() {
+//        logic untuk handle pengisian tidak normal
         if (edit_text_title.text.toString().trim().isBlank() || edit_text_description.text.toString().trim().isBlank()) {
             Toast.makeText(this, "Catatan kosong!", Toast.LENGTH_SHORT).show()
             return
         }
+
+//        set data yang telah diedit
         val data = Intent().apply {
             putExtra(EXTRA_JUDUL, edit_text_title.text.toString())
             putExtra(EXTRA_DESKRIPSI, edit_text_description.text.toString())

@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.note_item.view.*
 
 class NoteAdapter : ListAdapter<Note, NoteAdapter.NoteHolder>(DIFF_CALLBACK) {
     companion object {
+//        Logic untuk mengurutkan prioritas
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Note>() {
             override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
                 return oldItem.id == newItem.id
@@ -22,6 +23,8 @@ class NoteAdapter : ListAdapter<Note, NoteAdapter.NoteHolder>(DIFF_CALLBACK) {
             }
         }
     }
+
+//    menetapkan note_item sebagai layout RecyclerView
     private var listener: OnItemClickListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
         val itemView: View = LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent, false)
@@ -33,9 +36,13 @@ class NoteAdapter : ListAdapter<Note, NoteAdapter.NoteHolder>(DIFF_CALLBACK) {
         holder.textViewPriority.text = currentNote.priority.toString()
         holder.textViewDescription.text = currentNote.description
     }
+
+//    get position item yang dipilih
     fun getNoteAt(position: Int): Note {
         return getItem(position)
     }
+
+//    set data pada item RecyclerView
     inner class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
@@ -49,6 +56,8 @@ class NoteAdapter : ListAdapter<Note, NoteAdapter.NoteHolder>(DIFF_CALLBACK) {
         var textViewPriority: TextView = itemView.text_view_priority
         var textViewDescription: TextView = itemView.text_view_description
     }
+
+//    Menambahkan clickListener pada app
     interface OnItemClickListener {
         fun onItemClick(note: Note)
     }

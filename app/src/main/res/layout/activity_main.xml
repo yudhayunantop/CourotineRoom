@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<!--    Menambahkan RecyclerView-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -15,6 +16,7 @@
         tools:itemCount="5"
         tools:listitem="@layout/note_item" />
 
+<!--    Menambahkan FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonAddNote"
         android:layout_width="wrap_content"

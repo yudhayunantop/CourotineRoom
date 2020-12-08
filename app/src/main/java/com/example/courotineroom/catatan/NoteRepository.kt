@@ -5,6 +5,8 @@ import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 
 class NoteRepository(application: Application) {
+
+    //MEnambahkan query kedalam repository
     private var noteDao: NoteDao
     private var allNotes: LiveData<List<Note>>
     init {
@@ -31,6 +33,8 @@ class NoteRepository(application: Application) {
     fun getAllNotes(): LiveData<List<Note>> {
         return allNotes
     }
+
+//    Menerapkan Courutine pada query
     companion object {
         private class InsertNoteAsyncTask(noteDao: NoteDao) : AsyncTask<Note, Unit, Unit>() {
             val noteDao = noteDao

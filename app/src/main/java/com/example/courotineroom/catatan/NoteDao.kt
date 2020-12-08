@@ -3,6 +3,7 @@ package com.example.courotineroom.catatan
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
+//Deklarasi query yang akan digunakan
 @Dao
 interface NoteDao {
     @Insert
